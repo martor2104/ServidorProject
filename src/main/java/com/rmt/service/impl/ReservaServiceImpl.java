@@ -25,6 +25,8 @@ public class ReservaServiceImpl implements ReservaService{
 
 	@Autowired
 	private ReservaRepository reservaRepository;
+	@Autowired
+	private UserRepository userRepository;
 	
 	@Autowired
 	private MesaRepository mesaRepository;
@@ -93,16 +95,18 @@ public class ReservaServiceImpl implements ReservaService{
 	}
 
 	@Override
-	public List<Reserva> listarReservasPorUsuario(Long usuarioId, Pageable pageable) {
-	    return reservaRepository.findByCliente(usuarioId, pageable);
+	public List<Reserva> listarReservasPorUsuario(Long usuarioId) {
+		Usuario user = userRepository.findById(usuarioId).get();
+		return reservaRepository.findByCliente(user);
 	}
 	
-	/*
+	
 	@Override
     public Page<Mesa> listarMesasReservadasPorUsuario(Long usuarioId, Pageable pageable) {
         return mesaRepository.findByReservasClienteId(usuarioId, pageable);
-    }
-
+	}
+    
+/*
     @Override
     public Reserva reservarMesa(List<Mesa> mesas, Usuario cliente, Integer numClientes, LocalDate diaReserva) {
 
@@ -117,7 +121,7 @@ public class ReservaServiceImpl implements ReservaService{
 
         return reservaGuardada;
     }
-	*/
+	
 
 
 	@Override
@@ -125,7 +129,7 @@ public class ReservaServiceImpl implements ReservaService{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+*/
 	@Override
 	public Reserva reservarMesa(List<Mesa> mesas, Usuario cliente, Integer numClientes, LocalDate diaReserva) {
 		// TODO Auto-generated method stub

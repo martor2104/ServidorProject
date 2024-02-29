@@ -77,7 +77,7 @@ public class ReservaController {
 	    @GetMapping("/usuarios/{usuarioId}")
 	    public ResponseEntity<List<Reserva>> listarReservasPorUsuario(@PathVariable Long usuarioId) {
 	    	Pageable pageable = PageRequest.of(1,5);
-	        List<Reserva> reservas = reservaService.listarReservasPorUsuario(usuarioId, pageable);
+	        List<Reserva> reservas = reservaService.listarReservasPorUsuario(usuarioId);
 	        return new ResponseEntity<>(reservas, HttpStatus.OK);
 	    }
 
