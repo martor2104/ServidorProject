@@ -1,5 +1,6 @@
 package com.rmt.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rmt.entities.EstadoReserva;
 import com.rmt.entities.Mesa;
 import com.rmt.entities.Reserva;
+import com.rmt.entities.Usuario;
 import com.rmt.service.ReservaService;
 
 
@@ -40,8 +44,8 @@ public class ReservaController {
         Usuario cliente = // Obtén el usuario según el clienteId
         Reserva reserva = reservaService.reservarMesa(mesas, cliente, numClientes, diaReserva);
         return new ResponseEntity<>(reserva, HttpStatus.CREATED);
-    }
-*/
+    }*/
+
 		
 	    @PutMapping("/cancelar/{reservaId}")
 		@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
@@ -81,12 +85,12 @@ public class ReservaController {
 	        return new ResponseEntity<>(reservas, HttpStatus.OK);
 	    }
 
-	    @GetMapping("/listarMesasReservadasPorUsuario/{usuarioId}")
-	    public ResponseEntity<Page<Mesa>> listarMesasReservadasPorUsuario(
-	            @PathVariable Long usuarioId,
+	    @GetMapping("/mesas/{reservaId}")
+	    public ResponseEntity<Page<Mesa>> listarMesasReservadasReserva(
+	            @PathVariable Long reservaId,
 	            Pageable pageable) {
-	        Page<Mesa> mesas = reservaService.listarMesasReservadasPorUsuario(usuarioId, pageable);
-	        return new ResponseEntity<>(mesas, HttpStatus.OK);
+	        Page<Mesa> mesas = reservaService.listarMesasReservadasPorReserva(reservaId, pageable);
+		    return new ResponseEntity<>(mesas, HttpStatus.OK);
 	    }
 
 }

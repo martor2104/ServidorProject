@@ -1,8 +1,6 @@
 package com.rmt.security.user.impl;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +19,14 @@ import lombok.Builder;
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
+	@Autowired
 	private UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder = null;
-    private final JwtService jwtService = null;
-    private final AuthenticationManager authenticationManager = null;
+	
+	@Autowired
+    private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+    private JwtService jwtService;
     
     
 	@Override
@@ -46,11 +48,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	
 	@Override
 	public JwtAuthenticationResponse signin(SigninRequest request) {
-	       // Maneja la autenticación
-        Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        
-       // SecurityContextHolder.getContext().setAuthentication(authentication);
 
         Usuario user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));

@@ -28,7 +28,7 @@ public interface ReservaService {
     
     List<Reserva> listarReservasPorUsuario(Long usuarioId);
 
-	Page<Mesa> listarMesasReservadasPorUsuario(Long usuarioId, Pageable pageable);
+	Page<Mesa> listarMesasReservadasPorReserva(Long reservaId, Pageable pageable);
 
 	Reserva reservarMesa(List<Mesa> mesas, Usuario cliente, Integer numClientes, LocalDate diaReserva);
 }

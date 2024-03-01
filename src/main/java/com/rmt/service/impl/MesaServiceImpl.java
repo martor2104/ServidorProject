@@ -65,7 +65,7 @@ public class MesaServiceImpl implements MesaService{
 
 	@Override
 	public Page<Mesa> listarMesasReservadasPorUsuario(Long usuarioId, Pageable pageable) {
-		return mesaRepository.findByReservasClienteId(usuarioId, pageable);
+		return mesaRepository.findMesaByReserva(usuarioId, pageable);
 	}
 	 
 }

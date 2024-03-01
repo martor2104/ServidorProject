@@ -102,8 +102,8 @@ public class ReservaServiceImpl implements ReservaService{
 	
 	
 	@Override
-    public Page<Mesa> listarMesasReservadasPorUsuario(Long usuarioId, Pageable pageable) {
-        return mesaRepository.findByReservasClienteId(usuarioId, pageable);
+    public Page<Mesa> listarMesasReservadasPorReserva(Long reservaId, Pageable pageable) {
+        return mesaRepository.findMesaByReserva(reservaId, pageable);
 	}
     
 /*

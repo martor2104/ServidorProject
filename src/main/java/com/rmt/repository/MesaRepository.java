@@ -11,8 +11,8 @@ import com.rmt.entities.Mesa;
 @Repository
 public interface MesaRepository extends JpaRepository<Mesa, Long>{
 
-    @Query("SELECT m FROM Mesa m WHERE m.reserva.cliente.id = :usuarioId")
-    Page<Mesa> findByReservasClienteId(Long usuarioId, Pageable pageable);
+    @Query("SELECT m FROM Mesa m WHERE m.reserva.id = :reservaId")
+    Page<Mesa> findMesaByReserva(Long reservaId, Pageable pageable);
 
 	
 }
