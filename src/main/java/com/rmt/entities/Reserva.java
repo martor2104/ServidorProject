@@ -3,6 +3,8 @@ package com.rmt.entities;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,6 +32,7 @@ public class Reserva {
 	
 	private EstadoReserva estadoReserva;
 	
+	@JsonBackReference
     @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL)
     private List<Mesa> mesas;
 	
