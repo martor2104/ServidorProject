@@ -6,8 +6,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.rmt.entities.EstadoReserva;
@@ -102,8 +100,8 @@ public class ReservaServiceImpl implements ReservaService{
 	
 	
 	@Override
-    public Page<Mesa> listarMesasReservadasPorReserva(Long reservaId, Pageable pageable) {
-        return mesaRepository.findMesaByReserva(reservaId, pageable);
+    public List<Mesa> listarMesasReservadasPorReserva(Long reservaId) {
+        return mesaRepository.findMesaByReserva(reservaId);
 	}
     
 /*

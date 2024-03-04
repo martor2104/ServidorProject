@@ -46,7 +46,7 @@ public class MesaController {
 
 	
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
+  //  @PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
     public ResponseEntity<Page<Mesa>> listarTodasLasMesas(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {

@@ -1,6 +1,6 @@
 package com.rmt.entities;
 
-import java.util.List;
+
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -62,6 +62,16 @@ public class Mesa {
 
 	public void setNumMesa(Integer numMesa) {
 		this.numMesa = numMesa;
-	}	
+	}
+
+	public Reserva getReserva() {
+		return reserva;
+	}
+
+	public void setReserva(Reserva reserva) {
+		this.reserva = reserva;
+	}
+	
+	
 	
 }

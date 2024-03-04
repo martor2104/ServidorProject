@@ -26,5 +26,7 @@ public interface MesaService {
     void eliminarMesa(Long id);
 
     Page<Mesa> listarMesasReservadasPorUsuario(Long usuarioId, Pageable pageable);
+
+
     
 }

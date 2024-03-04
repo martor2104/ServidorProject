@@ -3,6 +3,7 @@ package com.rmt.entities;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,7 +30,7 @@ public class Reserva {
 	
 	private EstadoReserva estadoReserva;
 	
-    @OneToMany(mappedBy = "reserva")
+    @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL)
     private List<Mesa> mesas;
 	
     @ManyToOne

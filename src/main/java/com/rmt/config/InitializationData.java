@@ -64,19 +64,18 @@ public class InitializationData implements CommandLineRunner{
             
             usuarioRepository.save(cliente2);
             
+            Mesa mesa2 = new Mesa();
+            
+            mesa2.setNumMesa(2);
+            mesa2.setZona("Terraza");
+            mesa2.setMaxCliente(4);
+            
             Mesa mesa1 = new Mesa();
             
             mesa1.setNumMesa(1);
             mesa1.setZona("Terraza");
             mesa1.setMaxCliente(2);
             
-            mesaRepository.save(mesa1);
-            
-            Mesa mesa2 = new Mesa();
-            
-            mesa2.setNumMesa(2);
-            mesa2.setZona("Terraza");
-            mesa2.setMaxCliente(4);
             
             mesaRepository.save(mesa2);
             
@@ -92,6 +91,10 @@ public class InitializationData implements CommandLineRunner{
             reserva1.setHorario(LocalDate.of(2024, 4, 21));
             
             reservaRepository.save(reserva1);
+            
+            mesa1.setReserva(reserva1);
+            
+            mesaRepository.save(mesa1);
             
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

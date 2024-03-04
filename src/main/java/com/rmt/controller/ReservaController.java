@@ -45,7 +45,12 @@ public class ReservaController {
         Reserva reserva = reservaService.reservarMesa(mesas, cliente, numClientes, diaReserva);
         return new ResponseEntity<>(reserva, HttpStatus.CREATED);
     }*/
-
+    @GetMapping
+//	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<Reserva>> listarTodasLasReservas() {
+        List<Reserva> reservas = reservaService.listarTodasLasReservas();
+        return new ResponseEntity<>(reservas, HttpStatus.OK);
+    }
 		
 	    @PutMapping("/cancelar/{reservaId}")
 		@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
@@ -71,26 +76,18 @@ public class ReservaController {
 	                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	    }
 
-	    @GetMapping
-		@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
-	    public ResponseEntity<List<Reserva>> listarTodasLasReservas() {
-	        List<Reserva> reservas = reservaService.listarTodasLasReservas();
-	        return new ResponseEntity<>(reservas, HttpStatus.OK);
-	    }
+
 
 	    @GetMapping("/usuarios/{usuarioId}")
 	    public ResponseEntity<List<Reserva>> listarReservasPorUsuario(@PathVariable Long usuarioId) {
-	    	Pageable pageable = PageRequest.of(1,5);
 	        List<Reserva> reservas = reservaService.listarReservasPorUsuario(usuarioId);
 	        return new ResponseEntity<>(reservas, HttpStatus.OK);
 	    }
 
 	    @GetMapping("/mesas/{reservaId}")
-	    public ResponseEntity<Page<Mesa>> listarMesasReservadasReserva(
-	            @PathVariable Long reservaId,
-	            Pageable pageable) {
-	        Page<Mesa> mesas = reservaService.listarMesasReservadasPorReserva(reservaId, pageable);
-		    return new ResponseEntity<>(mesas, HttpStatus.OK);
+	    public ResponseEntity<List<Mesa>> listarMesasReservadasReserva(@PathVariable Long reservaId) {
+	        List<Mesa> mesas = reservaService.listarMesasReservadasPorReserva(reservaId);
+	        return new ResponseEntity<>(mesas, HttpStatus.OK);
 	    }
 
 }

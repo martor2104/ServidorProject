@@ -1,5 +1,7 @@
 package com.rmt.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +14,7 @@ import com.rmt.entities.Mesa;
 public interface MesaRepository extends JpaRepository<Mesa, Long>{
 
     @Query("SELECT m FROM Mesa m WHERE m.reserva.id = :reservaId")
-    Page<Mesa> findMesaByReserva(Long reservaId, Pageable pageable);
+    List<Mesa> findMesaByReserva(Long reservaId);
 
 	
 }
