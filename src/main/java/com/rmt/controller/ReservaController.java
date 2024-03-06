@@ -44,7 +44,6 @@ public class ReservaController {
 	private static final Logger logger =  LoggerFactory.getLogger(MesaController.class);
 	
 	@PostMapping("/{mesaId}/reservar")
-    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> realizarReserva(@AuthenticationPrincipal Usuario usuario, @PathVariable Long mesaId, @RequestBody Integer numeroPersonas) {
     	  try {
     		  
