@@ -17,9 +17,4 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 			SpringApplication.run(Application.class, args);
 		}
 
-		 @Bean
-		    public PasswordEncoder passwordEncoder() {
-		        return new BCryptPasswordEncoder();
-		    }
-		 
 }

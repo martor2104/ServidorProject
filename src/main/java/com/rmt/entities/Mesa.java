@@ -15,6 +15,23 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 @Table(name = "mesas")
 public class Mesa {
+	
+	
+
+	public Mesa(Long id, @NotNull(message = "Tiene que haber un número maximo de personas por mesa") Integer maxCliente,
+			@NotNull(message = "Tiene que haber un número para la mesa") Integer numMesa,
+			@NotBlank(message = "Tiene que especificar la zona de la mesa") String zona, Reserva reserva) {
+		super();
+		this.id = id;
+		this.maxCliente = maxCliente;
+		this.numMesa = numMesa;
+		this.zona = zona;
+		this.reserva = reserva;
+	}
+	
+	public Mesa() {
+		
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

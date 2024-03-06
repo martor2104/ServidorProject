@@ -1,16 +1,18 @@
 package com.rmt.controller;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +26,11 @@ import com.rmt.entities.EstadoReserva;
 import com.rmt.entities.Mesa;
 import com.rmt.entities.Reserva;
 import com.rmt.entities.Usuario;
+import com.rmt.security.dto.response.error.DetailsResponse;
+import com.rmt.security.dto.response.error.ErrorDetailsResponse;
 import com.rmt.service.ReservaService;
+
+import jakarta.persistence.EntityNotFoundException;
 
 
 
@@ -34,19 +40,63 @@ public class ReservaController {
 
 	@Autowired
 	private ReservaService reservaService;
-	/*
-    @PostMapping("/reservarMesa")
-    public ResponseEntity<Reserva> reservarMesa(
-            @RequestBody List<Mesa> mesas,
-            @RequestParam Long clienteId,
-            @RequestParam Integer numClientes,
-            @RequestParam LocalDate diaReserva) {
-        Usuario cliente = // Obtén el usuario según el clienteId
-        Reserva reserva = reservaService.reservarMesa(mesas, cliente, numClientes, diaReserva);
-        return new ResponseEntity<>(reserva, HttpStatus.CREATED);
-    }*/
+	
+	private static final Logger logger =  LoggerFactory.getLogger(MesaController.class);
+	
+	@PostMapping("/{mesaId}/reservar")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<?> realizarReserva(@AuthenticationPrincipal Usuario usuario, @PathVariable Long mesaId, @RequestBody Integer numeroPersonas) {
+    	  try {
+    		  
+    		  if (usuario == null) {
+    	            ErrorDetailsResponse errorDetails = new ErrorDetailsResponse(
+    	                    new Date(),
+    	                    "Error interno del servidor",
+    	                    "El objeto de usuario es nulo"
+    	            );
+    	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDetails);
+    	        }
+    		  
+    	        logger.info("MesaController :: realizarReserva id Mesa: {} Cliente: {}", mesaId, usuario.getUsername());
+
+    	        LocalDate fechaReserva = LocalDate.now();
+
+
+    	        Long usuarioId = usuario.getId(); 
+
+    	        Reserva reserva = reservaService.crearReserva(mesaId, usuarioId, fechaReserva, numeroPersonas);
+
+
+    	        String message = reserva.getMesas().stream()
+    	                .map(mesa -> "Reservado: '" + mesa.getNumMesa() + "', " + mesa.getZona() + ", " + mesa.getMaxCliente())
+    	                .collect(Collectors.joining(", ")); 
+
+    	        DetailsResponse details_reserva = new DetailsResponse(
+    	                new Date(),
+    	                message,
+    	                "Detalles adicionales aquí"
+    	        );
+
+    	        return ResponseEntity.status(HttpStatus.CREATED).body(details_reserva);
+          } catch (EntityNotFoundException e) {
+        	  ErrorDetailsResponse errorDetails = new ErrorDetailsResponse(
+                      new Date(),
+                      "No encontrado",
+                      e.getMessage()
+              );
+              return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDetails);
+          } catch (Exception e) {
+              ErrorDetailsResponse errorDetails = new ErrorDetailsResponse(
+                      new Date(),
+                      "Error interno del servidor",
+                      e.getMessage()
+              );
+              return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDetails);
+          }
+      }
+	
+	
     @GetMapping
-//	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<Reserva>> listarTodasLasReservas() {
         List<Reserva> reservas = reservaService.listarTodasLasReservas();
         return new ResponseEntity<>(reservas, HttpStatus.OK);

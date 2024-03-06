@@ -41,12 +41,15 @@ public class MesaController {
 
 	private static final Logger logger =  LoggerFactory.getLogger(MesaController.class);
 	
-	@Autowired
-	private MesaService mesaService;
+	private final MesaService mesaService;
+	
+	public MesaController(MesaService mesaService) {
+		this.mesaService = mesaService;
+	}
 
 	
     @GetMapping
-  //  @PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
     public ResponseEntity<Page<Mesa>> listarTodasLasMesas(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -82,47 +85,7 @@ public class MesaController {
         mesaService.eliminarMesa(id);
     }
     
-    /*
-    @PostMapping("/{mesaId}/reservar")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<?> realizarReserva(@PathVariable Long mesaId, @AuthenticationPrincipal Usuario usuario, Integer numeroPersonas) {
-    	  try {
-    	        logger.info("MesaController :: realizarReserva id Mesa: {} Cliente: {}", mesaId, usuario.getUsername());
-
-    	        LocalDate fechaReserva = LocalDate.now();
-
-
-    	        Long usuarioId = usuario.getId(); 
-
-    	        Reserva reserva = reservaService.crearReserva(mesaId, usuarioId, fechaReserva, numeroPersonas);
-
-
-    	        String message = reserva.getMesas().stream()
-    	                .map(mesa -> "Reservado: '" + mesa.getNumMesa() + "', " + mesa.getZona() + ", " + mesa.getMaxCliente())
-    	                .collect(Collectors.joining(", ")); 
-
-    	        DetailsResponse details_reserva = new DetailsResponse(
-    	                new Date(),
-    	                message,
-    	                "Detalles adicionales aquí"
-    	        );
-
-    	        return ResponseEntity.status(HttpStatus.CREATED).body(details_reserva);
-          } catch (EntityNotFoundException e) {
-        	  ErrorDetailsResponse errorDetails = new ErrorDetailsResponse(
-                      new Date(),
-                      "No encontrado",
-                      e.getMessage()
-              );
-              return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDetails);
-          } catch (Exception e) {
-              ErrorDetailsResponse errorDetails = new ErrorDetailsResponse(
-                      new Date(),
-                      "Error interno del servidor",
-                      e.getMessage()
-              );
-              return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDetails);
-          }
-      }
-    */
+    
+    
+    
 }
